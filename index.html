@@ -123,21 +123,20 @@
     <h2>Schedule Your Free Roof Assessment</h2>
     <p>Tell us about your roof and we’ll follow up with next steps.</p>
   </div>
-
-  <form action="https://hooks.zapier.com/hooks/catch/28034993/42tfz83/" method="POST">
-    <input type="text" placeholder="Full Name">
-    <input type="email" placeholder="Email Address">
-    <input type="tel" placeholder="Phone Number">
-    <select>
-      <option>Service Needed</option>
-      <option>Roof Inspection</option>
-      <option>Roof Repair</option>
-      <option>Roof Replacement</option>
-      <option>Storm Damage</option>
-    </select>
-    <textarea placeholder="Tell us about your project"></textarea>
-    <button>Request Appointment</button>
-  </form>
+<form action="https://hooks.zapier.com/hooks/catch/28034993/42tfz83/" method="POST">
+  <input type="text" name="full_name" placeholder="Full Name" required>
+  <input type="email" name="email" placeholder="Email Address" required>
+  <input type="tel" name="phone" placeholder="Phone Number" required>
+  <select name="service_needed" required>
+    <option>Service Needed</option>
+    <option>Roof Inspection</option>
+    <option>Roof Repair</option>
+    <option>Roof Replacement</option>
+    <option>Storm Damage</option>
+  </select>
+  <textarea name="message" placeholder="Tell us about your project" required></textarea>
+  <button type="submit">Request Appointment</button>
+</form>
 </section>
 
 <footer>
