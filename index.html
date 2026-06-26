@@ -3,241 +3,329 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Roof Concierge | Premium Roofing Services</title>
-  <meta name="description" content="The Roof Concierge provides white-glove roof inspections, repairs, replacements, storm restoration, and project management." />
-  <link rel="stylesheet" href="style.css" />
+  <title>The Roof Concierge | Indianapolis Roofing</title>
+  <meta name="description" content="Premium residential and commercial roofing services in Indianapolis, including inspections, repairs, roof replacement, storm damage evaluations, and maintenance." />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" href="assets/logo-dark.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RoofingContractor",
+    "name": "The Roof Concierge",
+    "url": "https://example.com",
+    "areaServed": ["Indianapolis", "Carmel", "Noblesville", "Avon", "Fishers", "Zionsville", "Westfield"],
+    "description": "Premium residential and commercial roofing services with inspections, repairs, replacements, storm damage evaluations, and maintenance.",
+    "telephone": "ADD-PHONE-NUMBER",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Indianapolis",
+      "addressRegion": "IN",
+      "addressCountry": "US"
+    }
+  }
+  </script>
 </head>
 <body>
-
-  <div class="topbar">
-    <p>Premium Roof Care • Repairs • Replacements • Storm Support</p>
-    <a href="tel:5555555555">(555) 555-5555</a>
-  </div>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <header class="site-header">
-    <nav class="navbar">
-      <a href="#home" class="brand">
-        <img src="logo.png" alt="The Roof Concierge Logo" />
+    <div class="top-strip">
+      <p>Premium Residential & Commercial Roofing</p>
+      <div class="top-actions">
+        <a href="tel:ADD-PHONE-NUMBER">ADD PHONE NUMBER</a>
+        <a href="#estimate">Instant Estimate</a>
+      </div>
+    </div>
+
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="brand" href="index.html" aria-label="The Roof Concierge home">
+        <img src="assets/logo-dark.png" alt="The Roof Concierge logo" />
         <span>The Roof Concierge</span>
       </a>
 
-      <div class="nav-links">
+      <button class="mobile-toggle" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+        <strong>Menu</strong>
+      </button>
+
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html">Home</a>
         <a href="#services">Services</a>
-        <a href="#repairs">Repairs</a>
         <a href="#process">Process</a>
-        <a href="#projects">Projects</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#contact" class="nav-cta">Get a Quote</a>
+
+        <div class="dropdown">
+          <button class="dropdown-toggle" aria-expanded="false">Areas</button>
+          <div class="dropdown-menu">
+            <a class="active" href="index.html">Indianapolis</a>
+            <a href="carmel.html">Carmel</a>
+            <a href="noblesville.html">Noblesville</a>
+            <a href="avon.html">Avon</a>
+            <a href="fishers.html">Fishers</a>
+            <a href="zionsville.html">Zionsville</a>
+            <a href="westfield.html">Westfield</a>
+          </div>
+        </div>
+
+        <a href="#faq">FAQ</a>
+        <a class="nav-cta" href="#estimate">Instant Estimate</a>
       </div>
     </nav>
   </header>
 
-  <main id="home">
+  <main id="main-content">
     <section class="hero">
-      <div class="hero-content">
-        <p class="eyebrow">The White Glove Roofing Experience</p>
-        <h1>Roofing Care, Managed From Inspection to Completion.</h1>
-        <p>
-          The Roof Concierge helps homeowners and property owners navigate roof repairs,
-          replacements, storm damage, and insurance documentation with clarity, care, and confidence.
-        </p>
-        <div class="hero-buttons">
-          <a href="#contact" class="button primary">Schedule Free Assessment</a>
-          <a href="#services" class="button secondary">View Services</a>
-        </div>
-      </div>
-
-      <aside class="quote-card">
-        <h2>Get a Quote</h2>
-        <form>
-          <div class="form-row">
-            <input type="text" placeholder="First name" required />
-            <input type="text" placeholder="Last name" />
-          </div>
-          <input type="email" placeholder="Email" required />
-          <input type="tel" placeholder="Phone number" required />
-          <input type="text" placeholder="Zip code" />
-          <select>
-            <option>Service of Interest</option>
-            <option>Roof Repair</option>
-            <option>Roof Replacement</option>
-            <option>Storm Damage</option>
-            <option>Commercial Roofing</option>
-            <option>Inspection</option>
-          </select>
-          <textarea placeholder="Project description"></textarea>
-          <button type="submit">Request Appointment</button>
-        </form>
-      </aside>
-    </section>
-
-    <section class="trust-strip">
-      <div><strong>Concierge-Level Care</strong><span>Guidance at every step</span></div>
-      <div><strong>Repair-First Mindset</strong><span>Honest recommendations</span></div>
-      <div><strong>Storm Support</strong><span>Documentation and next steps</span></div>
-      <div><strong>Premium Experience</strong><span>Clean, clear, professional</span></div>
-    </section>
-
-    <section class="section intro-section">
-      <div class="two-col">
-        <div>
-          <p class="eyebrow dark">Central Indiana Roofing Care</p>
-          <h2>Not Just a Roofer. Your Personal Roof Advisor.</h2>
-        </div>
-        <div>
-          <p>
-            Most roofing companies try to sell you a roof. The Roof Concierge helps you
-            understand your roof first. We inspect, diagnose, explain your options, and help
-            manage the details so the process feels simple and professional.
-          </p>
-          <a href="#about" class="text-link">Learn About Our Approach →</a>
+      <div class="hero-overlay"></div>
+      <div class="hero-inner section-shell">
+        <div class="eyebrow">Indianapolis • Carmel • Fishers • Westfield • Zionsville • Noblesville • Avon</div>
+        <h1>Concierge Roofing for Indianapolis Homes & Commercial Properties</h1>
+        <p>A clean, premium roofing experience built around inspections, repairs, replacements, storm evaluations, and clear next steps.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#estimate">Start Instant Estimate</a>
+          <a class="button button-secondary" href="#services">View Services</a>
         </div>
       </div>
     </section>
 
-    <section class="section services" id="services">
-      <div class="section-heading">
-        <p class="eyebrow dark">Our Services</p>
-        <h2>Complete Roofing Support</h2>
+    <section class="intro section-shell">
+      <div class="intro-copy">
+        <span class="section-kicker">The concierge difference</span>
+        <h2>Roofing care that feels organized, premium, and easy to understand.</h2>
+        <p>The Roof Concierge is built for property owners who want a smoother roofing experience from first inspection to final walkthrough.</p>
+        <p>As the main service page, this Indianapolis template can serve as the foundation for the brand’s local SEO, Roofr instant estimate embed, service positioning, and navigation to nearby city landing pages.</p>
       </div>
-
-      <div class="service-grid">
-        <article class="service-card">
-          <div class="service-icon">⌂</div>
-          <h3>Residential Roofing</h3>
-          <p>Premium roof inspections, repair guidance, and replacement coordination for homeowners.</p>
-          <a href="#contact">Get a Free Estimate</a>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon">▣</div>
-          <h3>Commercial Roofing</h3>
-          <p>Support for commercial roof assessments, maintenance planning, repairs, and replacements.</p>
-          <a href="#contact">Get a Free Estimate</a>
-        </article>
-
-        <article class="service-card highlight">
-          <div class="service-icon">✦</div>
-          <h3>Roof Repairs</h3>
-          <p>Leak checks, missing shingles, flashing issues, vent concerns, and repair-focused solutions.</p>
-          <a href="#repairs">View Repair Services</a>
-        </article>
-
-        <article class="service-card">
-          <div class="service-icon">☔</div>
-          <h3>Storm Restoration</h3>
-          <p>Post-storm inspections, photo documentation, and guidance after wind or hail damage.</p>
-          <a href="#contact">Schedule Inspection</a>
-        </article>
+      <div class="intro-panel">
+        <img src="assets/logo-light.png" alt="The Roofing Concierge secondary logo" />
       </div>
     </section>
 
-    <section class="section dark-section" id="repairs">
-      <div class="two-col">
-        <div>
-          <p class="eyebrow">Roof Repairs</p>
-          <h2>Repair When Possible. Replace When Necessary.</h2>
-          <p class="light-text">
-            A full replacement is not always the right answer. Our repair-first approach gives
-            customers confidence that they are choosing the right solution for the condition of their roof.
-          </p>
-        </div>
-
-        <div class="repair-list">
-          <div>Leak Detection</div>
-          <div>Missing Shingles</div>
-          <div>Pipe Boots & Vents</div>
-          <div>Flashing Issues</div>
-          <div>Storm Damage</div>
-          <div>Maintenance Plans</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section process" id="process">
-      <div class="section-heading">
-        <p class="eyebrow dark">Our Process</p>
-        <h2>The Concierge Method</h2>
-      </div>
-
-      <div class="steps">
-        <div class="step"><span>01</span><h3>Inspect</h3><p>We assess the roof and document what we find.</p></div>
-        <div class="step"><span>02</span><h3>Diagnose</h3><p>We explain the condition, cause, and level of urgency.</p></div>
-        <div class="step"><span>03</span><h3>Recommend</h3><p>We provide repair or replacement options with clarity.</p></div>
-        <div class="step"><span>04</span><h3>Manage</h3><p>We help coordinate the project through completion.</p></div>
-      </div>
-    </section>
-
-    <section class="cta-band">
+    <section class="trust-bar section-shell" aria-label="Key service highlights">
       <div>
-        <h2>Ready for a better roofing experience?</h2>
-        <p>Schedule your roof assessment and let us handle the details.</p>
+        <strong>Residential</strong>
+        <span>Luxury homes, repairs, replacements</span>
       </div>
-      <a href="#contact" class="button primary">Get Started</a>
+      <div>
+        <strong>Commercial</strong>
+        <span>Property managers and business owners</span>
+      </div>
+      <div>
+        <strong>Roofr Ready</strong>
+        <span>Instant estimate embed placeholder included</span>
+      </div>
+      <div>
+        <strong>Local Pages</strong>
+        <span>Built for Indianapolis-area SEO</span>
+      </div>
     </section>
 
-    <section class="section projects" id="projects">
+    <section class="photo-feature section-shell">
+      <div class="photo-placeholder large">
+        <span>Replace with premium roof/project photo</span>
+      </div>
+      <div class="photo-copy">
+        <span class="section-kicker">Indianapolis roofing services</span>
+        <h2>A cleaner path from roof concern to confident decision.</h2>
+        <p>Use this section for a polished project image, a luxury home roof, a commercial roof, or a before-and-after repair photo. Keep the copy simple and focused on trust, communication, and clear next steps.</p>
+        <ul class="check-list">
+          <li>Photo-supported inspection notes</li>
+          <li>Repair and replacement recommendations</li>
+          <li>Premium customer experience</li>
+          <li>Instant estimate call-to-action</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="services section-shell" id="services">
       <div class="section-heading">
-        <p class="eyebrow dark">Past Projects</p>
-        <h2>Project Gallery</h2>
-        <p>Add real project photos here when available.</p>
+        <span class="section-kicker">Services</span>
+        <h2>Residential and commercial roofing support.</h2>
+        <p>Simple service blocks that can be expanded into dedicated pages later.</p>
       </div>
+      <div class="service-grid">
+        
+            <article class="service-card">
+              <span class="service-number">01</span>
+              <h3>Roof Inspections</h3>
+              <p>Clear roof condition checks with photo-ready documentation, priority recommendations, and next-step guidance.</p>
+            </article>
 
-      <div class="project-grid">
-        <div class="project-card"><span>Residential Roof</span></div>
-        <div class="project-card"><span>Storm Repair</span></div>
-        <div class="project-card"><span>Commercial Roof</span></div>
+            <article class="service-card">
+              <span class="service-number">02</span>
+              <h3>Roof Repairs</h3>
+              <p>Targeted repair support for missing shingles, flashing issues, leaks, storm damage, and worn roof areas.</p>
+            </article>
+
+            <article class="service-card">
+              <span class="service-number">03</span>
+              <h3>Roof Replacements</h3>
+              <p>Premium replacement planning with material guidance, schedule clarity, and a clean proposal process.</p>
+            </article>
+
+            <article class="service-card">
+              <span class="service-number">04</span>
+              <h3>Storm Damage Evaluations</h3>
+              <p>A calm, organized process for hail, wind, debris, and storm-related roof concerns.</p>
+            </article>
+
+            <article class="service-card">
+              <span class="service-number">05</span>
+              <h3>Commercial Roofing</h3>
+              <p>Support for commercial owners, property managers, retail spaces, offices, and maintenance-focused roof needs.</p>
+            </article>
+
+            <article class="service-card">
+              <span class="service-number">06</span>
+              <h3>Roof Maintenance</h3>
+              <p>Preventive checkups that help extend roof life and catch issues before they become larger problems.</p>
+            </article>
       </div>
     </section>
 
-    <section class="section dark-section why" id="about">
+    <section class="estimate-section" id="estimate">
+      <div class="section-shell estimate-grid">
+        <div>
+          <span class="section-kicker">Instant estimate</span>
+          <h2>Paste the Roofr Instant Estimator embed here.</h2>
+          <p>This template intentionally does not include a traditional form. The estimate area is reserved for the Roofr embed code, iframe, or script that will collect the customer information inside Roofr.</p>
+        </div>
+        <div class="roofr-box">
+          <!-- ROOFR INSTANT ESTIMATOR EMBED
+               Paste the Roofr iframe/script below this comment.
+               Example:
+               <iframe src="ROOFR-ESTIMATE-LINK-HERE" title="Roofr Instant Estimate"></iframe>
+          -->
+          <div class="roofr-placeholder">
+            <strong>Roofr Instant Estimate</strong>
+            <span>Embed code goes here</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="process section-shell" id="process">
       <div class="section-heading">
-        <p class="eyebrow">Why Choose Us</p>
-        <h2>Built Around Trust, Communication, and Care.</h2>
+        <span class="section-kicker">Process</span>
+        <h2>A smooth experience from first click to next step.</h2>
       </div>
-
-      <div class="why-grid">
-        <div><h3>Honest Guidance</h3><p>We help you understand what your roof actually needs.</p></div>
-        <div><h3>White-Glove Service</h3><p>Clear updates, clean process, and premium customer experience.</p></div>
-        <div><h3>Documented Process</h3><p>Photos, findings, and recommendations organized for peace of mind.</p></div>
+      <div class="process-grid">
+        <article>
+          <span>01</span>
+          <h3>Start Estimate</h3>
+          <p>The customer starts with the Roofr instant estimate experience instead of filling out a separate website form.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Review Details</h3>
+          <p>The team reviews property details, roof needs, photos, measurements, and next-step requirements.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Recommend Options</h3>
+          <p>Repair, maintenance, or replacement options are presented clearly so the property owner can make a confident decision.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Deliver & Follow Up</h3>
+          <p>Work is completed with clean communication, photo documentation, and review generation after the project.</p>
+        </article>
       </div>
     </section>
 
-    <section class="section reviews" id="reviews">
+    <section class="areas section-shell" id="areas">
       <div class="section-heading">
-        <p class="eyebrow dark">Testimonials</p>
-        <h2>What Clients Say</h2>
+        <span class="section-kicker">Service areas</span>
+        <h2>Built for Indianapolis and surrounding high-value markets.</h2>
       </div>
-
-      <div class="review-grid">
-        <blockquote>“Professional, clear, and easy to work with. The process felt organized from start to finish.”<span>— Homeowner</span></blockquote>
-        <blockquote>“They helped us understand whether we needed a repair or full replacement. No pressure.”<span>— Property Owner</span></blockquote>
-        <blockquote>“The communication and documentation made the whole experience much easier.”<span>— Client</span></blockquote>
+      <div class="area-grid">
+        <a href="index.html">Indianapolis</a>
+        <a href="carmel.html">Carmel</a>
+        <a href="noblesville.html">Noblesville</a>
+        <a href="avon.html">Avon</a>
+        <a href="fishers.html">Fishers</a>
+        <a href="zionsville.html">Zionsville</a>
+        <a href="westfield.html">Westfield</a>
       </div>
     </section>
 
+    <section class="local-section section-shell">
+      <div class="local-card">
+        <span class="section-kicker">Indianapolis page content</span>
+        <h2>Areas and neighborhoods this page can target.</h2>
+        <p>Use this list to support local SEO and customize each landing page as the business gathers real photos, projects, reviews, and service history.</p>
+        <ul class="pill-list">
+          <li>Meridian-Kessler</li>
+          <li>Broad Ripple</li>
+          <li>Downtown Indianapolis</li>
+          <li>North Indianapolis</li>
+          <li>Irvington</li>
+          <li>Geist-area properties</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="faq section-shell" id="faq">
+      <div class="section-heading">
+        <span class="section-kicker">FAQ</span>
+        <h2>Quick answers for property owners.</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>Do you handle roof repairs, or only full replacements?</summary>
+          <p>This template positions repairs as a major service opportunity. Replace this answer with the company’s exact repair policy, minimum service call requirements, and scheduling process.</p>
+        </details>
+        <details>
+          <summary>Can customers get an instant estimate?</summary>
+          <p>Yes. This website includes a dedicated Roofr instant estimate section. Paste the Roofr embed code where marked in the HTML.</p>
+        </details>
+        <details>
+          <summary>Do you work with commercial properties?</summary>
+          <p>Yes. The site is structured for both premium residential roofing and commercial roofing/property management opportunities.</p>
+        </details>
+        <details>
+          <summary>What photos should be added?</summary>
+          <p>Add real project photos, before-and-after repair photos, roof detail shots, team photos, commercial property photos, and finished roof replacements.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="section-shell">
+        <span class="section-kicker">Ready for a cleaner roofing experience?</span>
+        <h2>Start with an instant estimate.</h2>
+        <a class="button button-primary" href="#estimate">Start Instant Estimate</a>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <div>
-      <img src="logo.png" alt="The Roof Concierge Logo" />
-      <p>The Roof Concierge</p>
+  <footer class="site-footer">
+    <div class="section-shell footer-grid">
+      <div>
+        <img class="footer-logo" src="assets/logo-dark.png" alt="The Roof Concierge logo" />
+        <p>Premium residential and commercial roofing support across Indianapolis and surrounding communities.</p>
+      </div>
+      <div>
+        <h3>Areas</h3>
+        <a href="index.html">Indianapolis</a>
+        <a href="carmel.html">Carmel</a>
+        <a href="noblesville.html">Noblesville</a>
+        <a href="avon.html">Avon</a>
+        <a href="fishers.html">Fishers</a>
+        <a href="zionsville.html">Zionsville</a>
+        <a href="westfield.html">Westfield</a>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <a href="tel:ADD-PHONE-NUMBER">ADD PHONE NUMBER</a>
+        <a href="mailto:ADD-EMAIL">ADD EMAIL</a>
+        <p>Indianapolis, Indiana</p>
+      </div>
     </div>
-    <div>
-      <h4>Services</h4>
-      <a href="#services">Residential Roofing</a>
-      <a href="#repairs">Roof Repairs</a>
-      <a href="#services">Commercial Roofing</a>
-      <a href="#services">Storm Restoration</a>
-    </div>
-    <div>
-      <h4>Contact</h4>
-      <a href="tel:5555555555">(555) 555-5555</a>
-      <a href="mailto:info@theroofconcierge.com">info@theroofconcierge.com</a>
-      <p>Central Indiana</p>
+    <div class="footer-bottom">
+      <span>© 2026 The Roof Concierge. All rights reserved.</span>
+      <span>Website template by Bridge Pointe Advisory Group.</span>
     </div>
   </footer>
 
+  <script src="assets/script.js"></script>
 </body>
 </html>
