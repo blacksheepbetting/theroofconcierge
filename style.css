@@ -717,3 +717,44 @@ details p { margin-bottom: 0; }
     padding: 10px 0;
   }
 }
+
+/* Breadcrumbs */
+.breadcrumbs {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 18px 0 8px;
+  font-size: 0.9rem;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  color: #5f6873;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: "›";
+  margin-left: 8px;
+  color: #8b949e;
+}
+
+.breadcrumbs a {
+  color: #17324d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus {
+  text-decoration: underline;
+}
