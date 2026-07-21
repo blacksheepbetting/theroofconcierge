@@ -718,43 +718,50 @@ details p { margin-bottom: 0; }
   }
 }
 
-/* Breadcrumbs */
+/* Breadcrumb navigation */
 .breadcrumbs {
-  width: min(1180px, calc(100% - 40px));
-  margin: 0 auto;
-  padding: 18px 0 8px;
-  font-size: 0.9rem;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 40, 68, 0.1);
 }
 
 .breadcrumbs ol {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 14px 0;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
-  padding: 0;
   list-style: none;
 }
 
 .breadcrumbs li {
   display: flex;
   align-items: center;
-  color: #5f6873;
+  margin: 0;
+  padding: 0;
+  color: #66717e;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .breadcrumbs li:not(:last-child)::after {
   content: "›";
   margin-left: 8px;
-  color: #8b949e;
+  color: #9aa3ad;
 }
 
 .breadcrumbs a {
   color: #17324d;
-  text-decoration: none;
   font-weight: 600;
+  text-decoration: none;
 }
 
 .breadcrumbs a:hover,
 .breadcrumbs a:focus {
   text-decoration: underline;
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: #66717e;
 }
