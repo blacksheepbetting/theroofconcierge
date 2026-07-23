@@ -765,3 +765,321 @@ details p { margin-bottom: 0; }
 .breadcrumbs [aria-current="page"] {
   color: #66717e;
 }
+
+/* ==================================================
+   THE ROOF CONCIERGE — NEW COLOR PALETTE
+   Paste this at the very bottom of style.css
+================================================== */
+
+:root {
+  /* Official brand colors */
+  --warm-ivory: #F2EFE8;
+  --champagne: #BBA477;
+  --titanium: #8C9295;
+
+  /* Supporting dark colors for website contrast */
+  --charcoal: #24282A;
+  --charcoal-2: #303538;
+  --charcoal-3: #3B4144;
+
+  /* Replace the previous navy and silver variables */
+  --navy: var(--charcoal);
+  --navy-2: var(--charcoal-2);
+  --navy-3: var(--charcoal-3);
+  --silver: var(--champagne);
+  --silver-2: var(--warm-ivory);
+  --white: var(--warm-ivory);
+  --ink: var(--charcoal);
+
+  /* Darker than Titanium for readable text on Ivory */
+  --muted: #62696C;
+
+  --line: rgba(140, 146, 149, 0.35);
+  --shadow: 0 24px 80px rgba(36, 40, 42, 0.18);
+}
+
+/* Main page */
+body {
+  background: var(--warm-ivory);
+  color: var(--charcoal);
+}
+
+/* Header */
+.site-header {
+  background: rgba(36, 40, 42, 0.97);
+  color: var(--warm-ivory);
+}
+
+.top-strip {
+  color: var(--titanium);
+  border-bottom-color: rgba(187, 164, 119, 0.2);
+}
+
+.top-actions a:last-child {
+  color: var(--warm-ivory);
+  border-bottom-color: var(--champagne);
+}
+
+.brand img,
+.mobile-toggle {
+  border-color: rgba(187, 164, 119, 0.35);
+}
+
+.nav-menu > a,
+.dropdown-toggle {
+  color: rgba(242, 239, 232, 0.88);
+}
+
+.nav-menu > a:hover,
+.dropdown-toggle:hover {
+  background: rgba(242, 239, 232, 0.08);
+  color: var(--warm-ivory);
+}
+
+.nav-cta {
+  background: var(--champagne) !important;
+  color: var(--charcoal) !important;
+}
+
+/* Dropdown */
+.dropdown-menu {
+  background: var(--warm-ivory);
+  color: var(--charcoal);
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a.active {
+  background: rgba(187, 164, 119, 0.16);
+  color: var(--charcoal);
+}
+
+/* Hero */
+.hero {
+  color: var(--warm-ivory);
+  background:
+    radial-gradient(
+      circle at 70% 22%,
+      rgba(187, 164, 119, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(36, 40, 42, 0.97),
+      rgba(48, 53, 56, 0.94)
+    );
+}
+
+.hero::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(36, 40, 42, 0.98) 0%,
+      rgba(36, 40, 42, 0.82) 48%,
+      rgba(36, 40, 42, 0.58) 100%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(242, 239, 232, 0.04) 0 1px,
+      transparent 1px 18px
+    );
+}
+
+.hero-overlay {
+  border-color: rgba(187, 164, 119, 0.35);
+}
+
+.hero p {
+  color: rgba(242, 239, 232, 0.78);
+}
+
+.eyebrow,
+.section-kicker,
+.service-number,
+.process-grid span,
+.check-list li::before {
+  color: var(--champagne);
+}
+
+/* Buttons */
+.button-primary {
+  background: var(--champagne);
+  color: var(--charcoal);
+}
+
+.button-primary:hover {
+  background: var(--warm-ivory);
+}
+
+.button-secondary {
+  border-color: rgba(242, 239, 232, 0.4);
+  color: var(--warm-ivory);
+}
+
+/* Light panels and cards */
+.intro-panel,
+.local-card {
+  background: linear-gradient(
+    135deg,
+    rgba(187, 164, 119, 0.13),
+    var(--warm-ivory)
+  );
+}
+
+.trust-bar,
+details,
+.pill-list li {
+  background: var(--warm-ivory);
+}
+
+.service-card {
+  background: linear-gradient(
+    180deg,
+    var(--warm-ivory),
+    rgba(187, 164, 119, 0.09)
+  );
+  box-shadow: 0 18px 60px rgba(36, 40, 42, 0.08);
+}
+
+/* Photo placeholder */
+.photo-placeholder {
+  border-color: rgba(187, 164, 119, 0.5);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(36, 40, 42, 0.9),
+      rgba(48, 53, 56, 0.78)
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(242, 239, 232, 0.08) 0 1px,
+      transparent 1px 18px
+    );
+  color: var(--warm-ivory);
+}
+
+/* Estimate section */
+.estimate-section {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(36, 40, 42, 0.99),
+      rgba(48, 53, 56, 0.97)
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(187, 164, 119, 0.24),
+      transparent 30%
+    );
+  color: var(--warm-ivory);
+}
+
+.estimate-section .section-kicker,
+.estimate-section h2 {
+  color: var(--warm-ivory);
+}
+
+.estimate-section p {
+  color: var(--titanium);
+}
+
+.roofr-box {
+  border-color: rgba(187, 164, 119, 0.3);
+  background: rgba(242, 239, 232, 0.07);
+}
+
+/* Service area buttons */
+.area-grid a {
+  background: var(--charcoal);
+  color: var(--warm-ivory);
+  border-color: rgba(187, 164, 119, 0.4);
+}
+
+.area-grid a:hover {
+  background: var(--champagne);
+  color: var(--charcoal);
+}
+
+/* Final call to action */
+.final-cta {
+  background: linear-gradient(
+    180deg,
+    rgba(187, 164, 119, 0.18),
+    var(--warm-ivory)
+  );
+}
+
+/* Footer */
+.site-footer {
+  background: var(--charcoal);
+  color: var(--warm-ivory);
+}
+
+.site-footer p,
+.site-footer a {
+  color: var(--titanium);
+}
+
+.site-footer h3 {
+  color: var(--warm-ivory);
+}
+
+.site-footer a:hover {
+  color: var(--champagne);
+}
+
+.footer-logo,
+.footer-bottom {
+  border-color: rgba(187, 164, 119, 0.25);
+}
+
+.footer-bottom {
+  color: var(--titanium);
+}
+
+/* Mobile navigation */
+@media (max-width: 980px) {
+  .nav-menu {
+    background: var(--warm-ivory);
+    color: var(--charcoal);
+  }
+
+  .nav-menu > a,
+  .dropdown-toggle {
+    color: var(--charcoal);
+  }
+
+  .nav-cta {
+    background: var(--champagne) !important;
+    color: var(--charcoal) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav-menu {
+    background: var(--warm-ivory);
+  }
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  background: var(--warm-ivory);
+  border-bottom-color: rgba(140, 146, 149, 0.25);
+}
+
+.breadcrumbs li,
+.breadcrumbs [aria-current="page"] {
+  color: #62696C;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  color: var(--titanium);
+}
+
+.breadcrumbs a {
+  color: var(--charcoal);
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus {
+  color: var(--champagne);
+}
