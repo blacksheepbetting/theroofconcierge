@@ -1083,3 +1083,148 @@ details,
 .breadcrumbs a:focus {
   color: var(--champagne);
 }
+
+/* ==================================================
+   SPLIT HERO WITH DIAGONAL HOUSE IMAGE
+================================================== */
+
+.hero {
+  position: relative;
+  min-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  color: #F2EFE8;
+  background: #24282A;
+}
+
+/* Remove the previous full-width hero overlay */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(187, 164, 119, 0.09),
+      transparent 34%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(242, 239, 232, 0.025) 0 1px,
+      transparent 1px 18px
+    );
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1240px, calc(100% - 40px));
+  min-height: 700px;
+  margin: 0 auto;
+  padding: 6rem 0;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+}
+
+.hero h1 {
+  max-width: 760px;
+  margin: 1.25rem 0 1.2rem;
+  font-family: var(--serif);
+  font-size: clamp(3.1rem, 6vw, 6rem);
+  line-height: 0.97;
+  letter-spacing: -0.05em;
+  color: #F2EFE8;
+}
+
+.hero p {
+  max-width: 680px;
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: rgba(242, 239, 232, 0.78);
+}
+
+.hero .eyebrow {
+  color: #BBA477;
+}
+
+/* Image side */
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 48%;
+  min-width: 520px;
+  overflow: hidden;
+
+  clip-path: polygon(
+    22% 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Champagne diagonal divider */
+.hero-image::before {
+  content: "";
+  position: absolute;
+  top: -5%;
+  bottom: -5%;
+  left: 10.5%;
+  z-index: 3;
+
+  width: 3px;
+  background: #BBA477;
+  transform: rotate(7deg);
+  transform-origin: center;
+  box-shadow: 0 0 24px rgba(187, 164, 119, 0.28);
+}
+
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(36, 40, 42, 0.45) 0%,
+      rgba(36, 40, 42, 0.12) 35%,
+      rgba(36, 40, 42, 0.03) 100%
+    );
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.02);
+}
+
+/* Keep text from extending under the image */
+.hero-copy {
+  padding-right: 1rem;
+}
+
+.hero-actions {
+  position: relative;
+  z-index: 4;
+}
