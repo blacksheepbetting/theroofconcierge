@@ -1245,7 +1245,7 @@ details,
     Adjust this if the house needs to move left or right.
     Try 55% center, 60% center, etc.
   */
-  object-position: 55% center;
+  object-position: 50% center;
 
   transform: none;
 }
