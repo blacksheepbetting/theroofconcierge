@@ -1087,28 +1087,31 @@ details,
 /* ==================================================
    SPLIT HERO WITH DIAGONAL HOUSE IMAGE
 ================================================== */
+/* ==================================================
+   SPLIT HERO WITH FULL RIGHT-SIDE IMAGE
+================================================== */
 
 .hero {
   position: relative;
-  min-height: 700px;
-  overflow: hidden;
+  min-height: 720px;
   display: flex;
   align-items: center;
-  color: #F2EFE8;
+  overflow: hidden;
   background: #24282A;
+  color: #F2EFE8;
 }
 
-/* Remove the previous full-width hero overlay */
+/* Dark texture behind the text */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
 
   background:
     radial-gradient(
-      circle at 20% 30%,
+      circle at 18% 28%,
       rgba(187, 164, 119, 0.09),
       transparent 34%
     ),
@@ -1119,63 +1122,93 @@ details,
     );
 }
 
+/*
+  Important:
+  position: static makes .hero-image position itself
+  against the full hero instead of the section-shell.
+*/
 .hero-inner {
-  position: relative;
-  z-index: 2;
+  position: static;
   width: min(1240px, calc(100% - 40px));
-  min-height: 700px;
+  min-height: 720px;
   margin: 0 auto;
-  padding: 6rem 0;
+  padding: 5.5rem 0;
 
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+  display: flex;
   align-items: center;
-  gap: 2.5rem;
 }
 
+/* Left-side content */
 .hero-copy {
   position: relative;
-  z-index: 3;
-  max-width: 760px;
-}
-
-.hero h1 {
-  max-width: 760px;
-  margin: 1.25rem 0 1.2rem;
-  font-family: var(--serif);
-  font-size: clamp(3.1rem, 6vw, 6rem);
-  line-height: 0.97;
-  letter-spacing: -0.05em;
-  color: #F2EFE8;
-}
-
-.hero p {
-  max-width: 680px;
-  margin: 0;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: rgba(242, 239, 232, 0.78);
+  z-index: 4;
+  width: 52%;
+  max-width: 690px;
+  padding-right: 2rem;
 }
 
 .hero .eyebrow {
   color: #BBA477;
 }
 
-/* Image side */
+.hero h1 {
+  max-width: 690px;
+  margin: 1.2rem 0 1.15rem;
+  font-family: var(--serif);
+
+  /* Slightly smaller so it does not become overly tall */
+  font-size: clamp(3rem, 5vw, 5.35rem);
+  line-height: 0.97;
+  letter-spacing: -0.05em;
+  color: #F2EFE8;
+}
+
+.hero p {
+  max-width: 620px;
+  margin: 0;
+  font-size: clamp(1rem, 1.4vw, 1.17rem);
+  color: rgba(242, 239, 232, 0.78);
+}
+
+.hero-actions {
+  position: relative;
+  z-index: 5;
+}
+
+/* Full right-side image */
 .hero-image {
   position: absolute;
+  z-index: 2;
+
   top: 0;
   right: 0;
   bottom: 0;
 
-  width: 48%;
-  min-width: 520px;
+  width: 52%;
+  min-width: 0;
   overflow: hidden;
 
   clip-path: polygon(
-    22% 0,
+    20% 0,
     100% 0,
     100% 100%,
     0 100%
+  );
+}
+
+/* Dark fade where photo meets text */
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    rgba(36, 40, 42, 0.5) 0%,
+    rgba(36, 40, 42, 0.15) 27%,
+    transparent 55%
   );
 }
 
@@ -1183,48 +1216,36 @@ details,
 .hero-image::before {
   content: "";
   position: absolute;
-  top: -5%;
-  bottom: -5%;
-  left: 10.5%;
   z-index: 3;
+  pointer-events: none;
 
+  top: -10%;
+  left: 10%;
   width: 3px;
+  height: 120%;
+
   background: #BBA477;
-  transform: rotate(7deg);
+  transform: rotate(8deg);
   transform-origin: center;
-  box-shadow: 0 0 24px rgba(187, 164, 119, 0.28);
-}
-
-.hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(36, 40, 42, 0.45) 0%,
-      rgba(36, 40, 42, 0.12) 35%,
-      rgba(36, 40, 42, 0.03) 100%
-    );
+  box-shadow: 0 0 18px rgba(187, 164, 119, 0.25);
 }
 
 .hero-image img {
   width: 100%;
   height: 100%;
   display: block;
+
+  /*
+    cover fills the whole image area without squeezing.
+    It crops excess portions instead of distorting them.
+  */
   object-fit: cover;
-  object-position: center;
-  transform: scale(1.02);
-}
 
-/* Keep text from extending under the image */
-.hero-copy {
-  padding-right: 1rem;
-}
+  /*
+    Adjust this if the house needs to move left or right.
+    Try 55% center, 60% center, etc.
+  */
+  object-position: 55% center;
 
-.hero-actions {
-  position: relative;
-  z-index: 4;
+  transform: none;
 }
