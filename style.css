@@ -1142,8 +1142,8 @@ details,
 .hero-copy {
   position: relative;
   z-index: 4;
-  width: 52%;
-  max-width: 690px;
+  width: 47%;
+  max-width: 659px;
   padding-right: 2rem;
 }
 
@@ -1184,12 +1184,12 @@ details,
   right: 0;
   bottom: 0;
 
-  width: 52%;
+  width: 57%;
   min-width: 0;
   overflow: hidden;
 
   clip-path: polygon(
-    20% 0,
+    18% 0,
     100% 0,
     100% 100%,
     0 100%
