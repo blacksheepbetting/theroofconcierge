@@ -1274,15 +1274,6 @@ details,
     );
   }
 
-  .hero-image::before {
-    top: 7%;
-    left: -5%;
-    width: 110%;
-    height: 3px;
-
-    transform: rotate(-4deg);
-  }
-
   .hero-image::after {
     background: linear-gradient(
       180deg,
