@@ -1556,3 +1556,31 @@ details,
     transition: none;
   }
 }
+
+
+/* SECTION ANCHOR SUPPORT — AUGUST 2026 */
+#services,
+#estimate,
+#process,
+#areas,
+#faq {
+  scroll-margin-top: 9rem;
+}
+
+.faq .section-heading {
+  margin-bottom: 2rem;
+}
+
+.faq details p {
+  color: var(--muted);
+}
+
+@media (max-width: 620px) {
+  #services,
+  #estimate,
+  #process,
+  #areas,
+  #faq {
+    scroll-margin-top: 6.5rem;
+  }
+}
