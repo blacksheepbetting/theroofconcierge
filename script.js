@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 900) setMenuState(false);
+      if (window.innerWidth > 980) setMenuState(false);
     });
   }
 
@@ -73,6 +73,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document.querySelectorAll("[data-conversion]").forEach((control) => {
+    control.addEventListener("click", () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "trc_conversion_intent",
+        conversion_type: control.dataset.conversion,
+        page_path: window.location.pathname
+      });
+    });
+  });
+
   const estimatorShells = document.querySelectorAll("[data-estimator]");
 
   const loadEstimator = (shell) => {
@@ -80,7 +91,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!iframe) return;
 
     if (!iframe.getAttribute("src")) {
-      iframe.setAttribute("src", iframe.dataset.src);
+      const estimatorUrl = new URL(iframe.dataset.src, window.location.href);
+      const pageParams = new URLSearchParams(window.location.search);
+      [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_id",
+        "utm_term",
+        "utm_content",
+        "gclid",
+        "gbraid",
+        "wbraid"
+      ].forEach((key) => {
+        const value = pageParams.get(key);
+        if (value) estimatorUrl.searchParams.set(key, value);
+      });
+      iframe.setAttribute("src", estimatorUrl.toString());
     }
 
     iframe.hidden = false;
