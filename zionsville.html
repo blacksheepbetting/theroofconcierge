@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roofing Company in Zionsville, IN | The Roof Concierge</title>
   <meta name="description" content="Roofing services in Zionsville, Indiana including inspections, repairs, replacements, storm damage response, and roof maintenance." />
-<link rel="stylesheet" href="style.css?v=21">
+<link rel="stylesheet" href="style.css?v=22">
   <link rel="icon" href="FinalTRCLogo.PNG" />
 
 </head>
@@ -27,8 +27,16 @@
         <span>The Roof Concierge</span>
       </a>
 
-      <button class="mobile-toggle" aria-expanded="false" aria-controls="nav-menu">
-        <span></span><span></span><span></span>
+      <button
+        class="mobile-toggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
         <strong>Menu</strong>
       </button>
 
@@ -179,9 +187,22 @@
           <p>Start your roof repair, roof replacement, or storm damage estimate online in just a few minutes. The Roof Concierge helps Zionsville homeowners, business owners, and property managers understand potential roofing costs and take the next step with confidence.</p>
           <p>Whether you need a professional roof inspection, leak repair, replacement estimate, commercial roofing support, or a storm damage evaluation, our process makes getting started simple, organized, and stress-free. For an active roof leak or urgent damage, 24/7 emergency roofing service is also available.</p>
         </div>
-       <div class="roofr-box">
-        <iframe src="https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge" width="800" height="600" frameborder="0" style="border: 0"></iframe>
+       <div class="roofr-box estimator-shell" data-estimator>
+          <div class="estimator-intro">
+            <strong>Ready for your instant roof estimate?</strong>
+            <p>Open the secure estimator when you are ready to measure your roof.</p>
+            <button class="estimator-launch" type="button">Open Instant Estimate</button>
           </div>
+          <iframe
+            data-src="https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge"
+            title="The Roof Concierge instant roof estimator"
+            width="800"
+            height="600"
+            frameborder="0"
+            loading="lazy"
+            hidden
+          ></iframe>
+        </div>
         </div>
       </div>
     </section>
@@ -252,6 +273,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
