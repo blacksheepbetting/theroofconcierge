@@ -1321,3 +1321,238 @@ details,
   object-fit: cover;
   object-position: center;
 }
+
+
+/* ==================================================
+   MOBILE CLEANUP — AUGUST 2026
+================================================== */
+
+.estimator-shell {
+  min-height: 340px;
+  display: grid;
+  place-items: center;
+}
+
+.estimator-intro {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 2.25rem 1.25rem;
+  text-align: center;
+  color: var(--warm-ivory);
+}
+
+.estimator-intro strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.estimator-intro p {
+  margin: 0 0 1.35rem;
+  color: rgba(242, 239, 232, 0.76);
+}
+
+.estimator-launch {
+  min-height: 52px;
+  padding: 0.9rem 1.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--champagne);
+  color: var(--charcoal);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+}
+
+.estimator-launch:hover,
+.estimator-launch:focus-visible {
+  transform: translateY(-2px);
+}
+
+.estimator-shell.is-loaded {
+  display: block;
+  min-height: 0;
+}
+
+.estimator-shell.is-loaded .estimator-intro {
+  display: none;
+}
+
+.estimator-shell iframe[hidden] {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  body.menu-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(20, 22, 24, 0.62);
+    backdrop-filter: blur(2px);
+  }
+
+  .mobile-toggle {
+    position: relative;
+    min-width: 104px;
+    min-height: 48px;
+    justify-content: flex-end;
+    border: 1px solid rgba(187, 164, 119, 0.35);
+    border-radius: 14px;
+  }
+
+  .mobile-toggle span {
+    position: absolute;
+    left: 12px;
+    width: 22px;
+    height: 2px;
+    margin: 0;
+    background: currentColor;
+    transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease;
+  }
+
+  .mobile-toggle span:nth-child(1) { top: 14px; }
+  .mobile-toggle span:nth-child(2) { top: 22px; }
+  .mobile-toggle span:nth-child(3) { top: 30px; }
+
+  .mobile-toggle strong {
+    margin-left: 34px;
+  }
+
+  .mobile-toggle[aria-expanded="true"] span:nth-child(1) {
+    top: 22px;
+    transform: rotate(45deg);
+  }
+
+  .mobile-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-toggle[aria-expanded="true"] span:nth-child(3) {
+    top: 22px;
+    transform: rotate(-45deg);
+  }
+
+  .nav-menu {
+    left: 14px;
+    right: 14px;
+    top: calc(100% + 8px);
+    max-height: calc(100vh - 104px);
+    overflow-y: auto;
+    padding: 14px 22px 18px;
+    border: 1px solid rgba(187, 164, 119, 0.25);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  }
+}
+
+@media (max-width: 620px) {
+  .hero-copy {
+    padding: 3rem 0 2.25rem;
+  }
+
+  .hero .eyebrow {
+    display: none;
+  }
+
+  .hero h1 {
+    margin-top: 0;
+    font-size: clamp(2.35rem, 11.5vw, 3.45rem);
+    line-height: 1;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .hero-actions {
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-image {
+    height: 260px;
+  }
+
+  .breadcrumbs ol {
+    width: min(100% - 28px, 1180px);
+    padding: 10px 0;
+  }
+
+  .breadcrumbs li {
+    font-size: 0.82rem;
+  }
+
+  .intro {
+    gap: 2rem;
+    padding: 3.25rem 0;
+  }
+
+  .trust-bar {
+    margin-bottom: 3.25rem;
+  }
+
+  .photo-feature {
+    gap: 2rem;
+    padding: 1rem 0 3.5rem;
+  }
+
+  .photo-placeholder.large,
+  .photo-placeholder.large img {
+    min-height: 340px;
+  }
+
+  .services,
+  .estimate-section,
+  .process,
+  .areas,
+  .faq {
+    padding: 4rem 0;
+  }
+
+  .local-section {
+    padding-bottom: 4rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .service-grid {
+    gap: 0.8rem;
+  }
+
+  .service-card {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+
+  .service-card p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .roofr-box {
+    min-height: 300px;
+    padding: 0.75rem;
+  }
+
+  .estimator-intro {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-toggle span,
+  .estimator-launch {
+    transition: none;
+  }
+}
