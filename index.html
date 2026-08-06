@@ -139,7 +139,13 @@
     <div class="hero-image" aria-hidden="true">
       <img
         src="indyindex.jpeg"
+        srcset="indyindex-mobile.jpeg 960w, indyindex.jpeg 2400w"
+        sizes="(max-width: 760px) 100vw, 50vw"
+        width="2400"
+        height="1798"
         alt=""
+        fetchpriority="high"
+        decoding="async"
       >
     </div>
 
@@ -183,7 +189,13 @@
   <div class="photo-placeholder large">
     <img
       src="indexstock.jpeg"
+      srcset="indexstock-mobile.jpeg 960w, indexstock.jpeg 2400w"
+      sizes="(max-width: 760px) 100vw, 50vw"
+      width="2400"
+      height="1345"
       alt="Roofing professional completing a residential roof installation"
+      loading="lazy"
+      decoding="async"
     >
   </div>
 
