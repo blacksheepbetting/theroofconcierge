@@ -1619,9 +1619,9 @@ details,
 .contact-section {
   padding: 5.5rem 0;
   background:
-    linear-gradient(135deg, rgba(7, 26, 51, 0.99), rgba(11, 39, 72, 0.96)),
-    var(--navy);
-  color: var(--white);
+    radial-gradient(circle at 12% 18%, rgba(187, 164, 119, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(36, 40, 42, 0.99), rgba(48, 53, 56, 0.97));
+  color: var(--warm-ivory);
 }
 
 .contact-layout {
@@ -1636,12 +1636,12 @@ details,
 }
 
 .contact-section .section-kicker {
-  color: #d6c28e;
+  color: var(--champagne);
 }
 
 .contact-copy h2 {
   margin: 0.85rem 0 1rem;
-  color: var(--white);
+  color: var(--warm-ivory);
   font-family: var(--serif);
   font-size: clamp(2.6rem, 5vw, 4.8rem);
   line-height: 0.98;
@@ -1651,7 +1651,7 @@ details,
 .contact-copy p {
   max-width: 600px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(242, 239, 232, 0.74);
   font-size: 1.05rem;
 }
 
@@ -1668,23 +1668,23 @@ details,
   min-width: 0;
   min-height: 68px;
   padding: 1rem 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(187, 164, 119, 0.28);
   border-radius: 16px;
-  color: var(--white);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--warm-ivory);
+  background: rgba(242, 239, 232, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .contact-action:hover,
 .contact-action:focus-visible {
   transform: translateX(4px);
-  border-color: #d6c28e;
-  background: rgba(187, 164, 119, 0.1);
+  border-color: var(--champagne);
+  background: rgba(187, 164, 119, 0.12);
 }
 
 .contact-action span {
   flex: 0 0 auto;
-  color: #d6c28e;
+  color: var(--champagne);
   font-size: 0.76rem;
   font-weight: 850;
   letter-spacing: 0.15em;
@@ -1702,19 +1702,19 @@ details,
 }
 
 .contact-action-primary {
-  border-color: #bba477;
-  background: #bba477;
-  color: #14233a;
+  border-color: var(--champagne);
+  background: var(--champagne);
+  color: var(--charcoal);
 }
 
 .contact-action-primary span {
-  color: #14233a;
+  color: var(--charcoal);
 }
 
 .contact-action-primary:hover,
 .contact-action-primary:focus-visible {
-  border-color: #d6c28e;
-  background: #d6c28e;
+  border-color: var(--warm-ivory);
+  background: var(--warm-ivory);
 }
 
 .privacy-main {
