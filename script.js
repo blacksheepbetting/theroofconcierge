@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       trackAnalyticsEvent(eventName, {
         conversion_type: conversionType,
         link_url: control.href || undefined,
-        link_text: control.textContent.trim().replace(/\\s+/g, " ").slice(0, 100)
+        link_text: control.textContent.trim().replace(/\s+/g, " ").slice(0, 100)
       });
     });
   });
