@@ -73,13 +73,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const trackAnalyticsEvent = (eventName, parameters = {}) => {
+    if (typeof window.gtag !== "function") return;
+
+    window.gtag("event", eventName, {
+      page_path: window.location.pathname,
+      ...parameters
+    });
+  };
+
+  const conversionEvents = {
+    phone_call: "phone_click",
+    email_click: "email_click"
+  };
+
   document.querySelectorAll("[data-conversion]").forEach((control) => {
     control.addEventListener("click", () => {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "trc_conversion_intent",
-        conversion_type: control.dataset.conversion,
-        page_path: window.location.pathname
+      const conversionType = control.dataset.conversion;
+      const eventName = conversionEvents[conversionType] || "conversion_intent";
+
+      trackAnalyticsEvent(eventName, {
+        conversion_type: conversionType,
+        link_url: control.href || undefined,
+        link_text: control.textContent.trim().replace(/\\s+/g, " ").slice(0, 100)
       });
     });
   });
@@ -108,6 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (value) estimatorUrl.searchParams.set(key, value);
       });
       iframe.setAttribute("src", estimatorUrl.toString());
+      trackAnalyticsEvent("estimate_start", {
+        estimator_provider: "Roofr",
+        estimator_url: estimatorUrl.toString()
+      });
     }
 
     iframe.hidden = false;
