@@ -13,12 +13,16 @@ This implementation keeps `estimate_start` as an ordinary GA4 event and sends
 4. Roofr stores the estimator URL with the successful lead.
 5. A Zapier `Roofr Lead Created` trigger sends the Roofr lead ID and stored URL
    to the protected `/api/roofr-lead` endpoint.
-6. The endpoint reserves the unique Roofr lead ID, resolves the token, sends one
-   `generate_lead` event through the GA4 Measurement Protocol, deletes the
-   token, and remembers the lead ID for 180 days to reject duplicates.
+6. The endpoint reserves the unique Roofr lead ID and sends one `generate_lead`
+   event through the GA4 Measurement Protocol. When Roofr preserves the token,
+   the event is joined to the website session and the token is deleted. If
+   Roofr removes the query string, the confirmed lead is recorded as
+   `confirmed_unattributed` using a non-PII server identifier. The lead ID is
+   remembered for 180 days to reject duplicates in either case.
 
 If the attribution service is unavailable, the estimator still opens and
-`estimate_start` still fires. It does not guess or create a false lead event.
+`estimate_start` still fires. A later Roofr confirmation can record the real
+lead, but it is explicitly kept separate from session-attributed conversions.
 
 ## 1. Create the GA4 API secret
 
@@ -83,12 +87,14 @@ Zap. A different Roofr API mapping will be required.
 2. Open the Instant Estimator and submit one clearly labeled test lead.
 3. Confirm the lead appears in Roofr.
 4. Confirm the Zap succeeds and the webhook response is
-   `{"status":"generate_lead_sent"}`.
+   `{"status":"generate_lead_sent","attribution":"matched"}` or
+   `{"status":"generate_lead_sent","attribution":"unattributed"}`.
 5. In GA4, confirm `generate_lead` appears in Realtime or DebugView.
 6. Replay the same Zapier action once. The endpoint should return
    `{"status":"duplicate_ignored"}` and GA4 should still show one lead event.
 7. Mark `generate_lead` as a key event only after the successful test.
 8. Remove `GA4_DEBUG_MODE` or set it to `false` after testing.
 
-Do not import `generate_lead` into Google Ads or use it for bidding until the
-full test passes and its campaign/session attribution is visible in GA4.
+Do not import `generate_lead` into Google Ads or use it for bidding when the
+response says `unattributed`. Those events are valid confirmed-lead counts, but
+they cannot be safely connected to the originating ad click or website session.

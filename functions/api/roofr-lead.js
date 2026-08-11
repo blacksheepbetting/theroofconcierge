@@ -1,7 +1,9 @@
 import {
   GA4_MEASUREMENT_ID,
+  getServerLeadClientId,
   getRoofrAttributionToken,
   isAuthorizedWebhook,
+  isExpectedRoofrLeadFormUrl,
   isValidEntryPath,
   isValidLeadId,
   jsonResponse
@@ -57,32 +59,38 @@ export async function onRequestPost({ request, env }) {
   }
   const leadId = String(rawLeadId);
 
+  if (!isExpectedRoofrLeadFormUrl(leadFormUrl)) {
+    return jsonResponse({ error: "Invalid Roofr lead form URL." }, 400);
+  }
+
   const processedKey = `processed:${leadId}`;
   if (await env.LEAD_ATTRIBUTION.get(processedKey)) {
     return jsonResponse({ status: "duplicate_ignored" });
   }
 
   const token = getRoofrAttributionToken(leadFormUrl);
-  if (!token) {
-    return jsonResponse({ error: "Attribution token is missing or invalid." }, 422);
-  }
-
-  const attributionKey = `attribution:${token}`;
-  const storedAttribution = await env.LEAD_ATTRIBUTION.get(attributionKey);
-  if (!storedAttribution) {
-    return jsonResponse({ error: "Attribution token is expired or unknown." }, 422);
-  }
-
   let attribution;
-  try {
-    attribution = JSON.parse(storedAttribution);
-  } catch {
-    return jsonResponse({ error: "Stored attribution is invalid." }, 500);
+  let attributionKey;
+  if (token) {
+    attributionKey = `attribution:${token}`;
+    const storedAttribution = await env.LEAD_ATTRIBUTION.get(attributionKey);
+    if (storedAttribution) {
+      try {
+        attribution = JSON.parse(storedAttribution);
+      } catch {
+        return jsonResponse({ error: "Stored attribution is invalid." }, 500);
+      }
+
+      if (!isValidEntryPath(attribution.entryPath)) {
+        return jsonResponse({ error: "Stored entry path is invalid." }, 500);
+      }
+    }
   }
 
-  if (!isValidEntryPath(attribution.entryPath)) {
-    return jsonResponse({ error: "Stored entry path is invalid." }, 500);
-  }
+  const isSessionMatched = Boolean(attribution);
+  const clientId = isSessionMatched
+    ? attribution.clientId
+    : await getServerLeadClientId(leadId);
 
   // Reserve the lead ID before contacting GA4 so normal retries or overlapping
   // Zapier deliveries cannot send the same lead twice. Failed sends release it.
@@ -93,14 +101,20 @@ export async function onRequestPost({ request, env }) {
   );
 
   const eventParameters = {
-    session_id: Number(attribution.sessionId),
     engagement_time_msec: 1,
     method: "Roofr Instant Estimator",
     estimator_provider: "Roofr",
-    estimator_entry_path: attribution.entryPath,
-    page_location: `https://www.theroofconcierge.com${attribution.entryPath}`,
+    attribution_status: isSessionMatched
+      ? "matched_website_session"
+      : "confirmed_unattributed",
     event_id: leadId.slice(0, 100)
   };
+
+  if (isSessionMatched) {
+    eventParameters.session_id = Number(attribution.sessionId);
+    eventParameters.estimator_entry_path = attribution.entryPath;
+    eventParameters.page_location = `https://www.theroofconcierge.com${attribution.entryPath}`;
+  }
 
   if (env.GA4_DEBUG_MODE === "true") {
     eventParameters.debug_mode = 1;
@@ -116,7 +130,7 @@ export async function onRequestPost({ request, env }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        client_id: attribution.clientId,
+        client_id: clientId,
         timestamp_micros: Date.now() * 1000,
         events: [{ name: "generate_lead", params: eventParameters }]
       })
@@ -136,9 +150,14 @@ export async function onRequestPost({ request, env }) {
     JSON.stringify({ status: "sent", processedAt: new Date().toISOString() }),
     { expirationTtl: PROCESSED_LEAD_TTL_SECONDS }
   );
-  await env.LEAD_ATTRIBUTION.delete(attributionKey);
+  if (attributionKey && isSessionMatched) {
+    await env.LEAD_ATTRIBUTION.delete(attributionKey);
+  }
 
-  return jsonResponse({ status: "generate_lead_sent" });
+  return jsonResponse({
+    status: "generate_lead_sent",
+    attribution: isSessionMatched ? "matched" : "unattributed"
+  });
 }
 
 export function onRequest() {

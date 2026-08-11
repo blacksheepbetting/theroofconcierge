@@ -33,6 +33,36 @@ export const isValidAttributionToken = (value) =>
     value
   );
 
+const parseExpectedRoofrLeadFormUrl = (leadFormUrl) => {
+  try {
+    const url = new URL(leadFormUrl);
+    const estimatorRoute = url.pathname.slice(ROOFR_ESTIMATOR_PATH.length);
+    const isExpectedEstimatorRoute =
+      estimatorRoute === "" ||
+      /^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)?$/.test(estimatorRoute);
+
+    return url.origin === ROOFR_ESTIMATOR_ORIGIN &&
+      url.pathname.startsWith(ROOFR_ESTIMATOR_PATH) &&
+      isExpectedEstimatorRoute
+      ? url
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+export const isExpectedRoofrLeadFormUrl = (leadFormUrl) =>
+  Boolean(parseExpectedRoofrLeadFormUrl(leadFormUrl));
+
+export const getServerLeadClientId = async (leadId) => {
+  const bytes = new TextEncoder().encode(`roofr-lead:${String(leadId)}`);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const view = new DataView(digest);
+  const first = view.getUint32(0) || 1;
+  const second = view.getUint32(4) || 1;
+  return `${first}.${second}`;
+};
+
 export const isAuthorizedWebhook = (request, expectedSecret) => {
   if (typeof expectedSecret !== "string" || expectedSecret.length < 32) {
     return false;
@@ -54,23 +84,11 @@ export const isAuthorizedWebhook = (request, expectedSecret) => {
 };
 
 export const getRoofrAttributionToken = (leadFormUrl) => {
-  try {
-    const url = new URL(leadFormUrl);
-    const estimatorRoute = url.pathname.slice(ROOFR_ESTIMATOR_PATH.length);
-    const isExpectedEstimatorRoute =
-      estimatorRoute === "" ||
-      /^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)?$/.test(estimatorRoute);
-    const isExpectedEstimator =
-      url.origin === ROOFR_ESTIMATOR_ORIGIN &&
-      url.pathname.startsWith(ROOFR_ESTIMATOR_PATH) &&
-      isExpectedEstimatorRoute &&
-      url.searchParams.get("bp_tracking_version") === "1";
-
-    if (!isExpectedEstimator) return undefined;
-
-    const token = url.searchParams.get("bp_attribution_token");
-    return isValidAttributionToken(token) ? token : undefined;
-  } catch {
+  const url = parseExpectedRoofrLeadFormUrl(leadFormUrl);
+  if (!url || url.searchParams.get("bp_tracking_version") !== "1") {
     return undefined;
   }
+
+  const token = url.searchParams.get("bp_attribution_token");
+  return isValidAttributionToken(token) ? token : undefined;
 };

@@ -5,7 +5,11 @@ import vm from "node:vm";
 
 import { onRequestPost as createAnalyticsSession } from "../functions/api/analytics-session.js";
 import { onRequestPost as confirmRoofrLead } from "../functions/api/roofr-lead.js";
-import { getRoofrAttributionToken } from "../src/server-tracking.js";
+import {
+  getRoofrAttributionToken,
+  getServerLeadClientId,
+  isExpectedRoofrLeadFormUrl
+} from "../src/server-tracking.js";
 
 class MemoryKv {
   constructor() {
@@ -138,7 +142,10 @@ test("confirmed Roofr lead sends generate_lead once", async () => {
     const secondResponse = await confirmRoofrLead({ request: makeRequest(), env });
 
     assert.equal(firstResponse.status, 200);
-    assert.deepEqual(await firstResponse.json(), { status: "generate_lead_sent" });
+    assert.deepEqual(await firstResponse.json(), {
+      status: "generate_lead_sent",
+      attribution: "matched"
+    });
     assert.deepEqual(await secondResponse.json(), { status: "duplicate_ignored" });
     assert.equal(ga4Calls.length, 1);
 
@@ -176,6 +183,64 @@ test("Roofr attribution accepts app routes but rejects lookalike estimator paths
     undefined
   );
   assert.equal(getRoofrAttributionToken(withTracking("/one/two/three")), undefined);
+  assert.equal(isExpectedRoofrLeadFormUrl(withTracking("/homeowner-contact")), true);
+  assert.equal(
+    isExpectedRoofrLeadFormUrl(
+      `${expectedBase}-lookalike?bp_attribution_token=${token}&bp_tracking_version=1`
+    ),
+    false
+  );
+});
+
+test("confirmed Roofr lead without a preserved token sends one unattributed event", async () => {
+  const kv = new MemoryKv();
+  const leadId = 705873;
+  const leadFormUrl =
+    "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge/homeowner-contact";
+  const request = () =>
+    new Request(`${siteOrigin}/api/roofr-lead`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${webhookSecret}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ lead_id: leadId, lead_form_url: leadFormUrl })
+    });
+  const ga4Calls = [];
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    ga4Calls.push({ url, options });
+    return new Response(null, { status: 204 });
+  };
+
+  try {
+    const env = {
+      LEAD_ATTRIBUTION: kv,
+      GA4_API_SECRET: "ga4-test-secret",
+      ROOFR_WEBHOOK_SECRET: webhookSecret
+    };
+    const firstResponse = await confirmRoofrLead({ request: request(), env });
+    const secondResponse = await confirmRoofrLead({ request: request(), env });
+
+    assert.equal(firstResponse.status, 200);
+    assert.deepEqual(await firstResponse.json(), {
+      status: "generate_lead_sent",
+      attribution: "unattributed"
+    });
+    assert.deepEqual(await secondResponse.json(), { status: "duplicate_ignored" });
+    assert.equal(ga4Calls.length, 1);
+
+    const ga4Payload = JSON.parse(ga4Calls[0].options.body);
+    assert.equal(ga4Payload.client_id, await getServerLeadClientId(leadId));
+    assert.equal(ga4Payload.events[0].name, "generate_lead");
+    assert.equal(
+      ga4Payload.events[0].params.attribution_status,
+      "confirmed_unattributed"
+    );
+    assert.equal("session_id" in ga4Payload.events[0].params, false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("failed GA4 delivery releases the lead for a safe retry", async () => {
@@ -264,7 +329,7 @@ test("debug authorization failure reports only safe header diagnostics", async (
   });
 });
 
-test("Roofr numeric lead IDs are accepted and normalized", async () => {
+test("invalid Roofr lead form URLs are rejected", async () => {
   const kv = new MemoryKv();
   const response = await confirmRoofrLead({
     request: new Request(`${siteOrigin}/api/roofr-lead`, {
@@ -275,8 +340,7 @@ test("Roofr numeric lead IDs are accepted and normalized", async () => {
       },
       body: JSON.stringify({
         lead_id: 123,
-        lead_form_url:
-          "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge"
+        lead_form_url: "https://example.com/not-roofr"
       })
     }),
     env: {
@@ -286,9 +350,9 @@ test("Roofr numeric lead IDs are accepted and normalized", async () => {
     }
   });
 
-  assert.equal(response.status, 422);
+  assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), {
-    error: "Attribution token is missing or invalid."
+    error: "Invalid Roofr lead form URL."
   });
 });
 
