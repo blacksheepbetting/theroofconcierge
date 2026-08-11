@@ -205,6 +205,41 @@ test("failed GA4 delivery releases the lead for a safe retry", async () => {
   }
 });
 
+test("debug authorization failure reports only safe header diagnostics", async () => {
+  const kv = new MemoryKv();
+  const response = await confirmRoofrLead({
+    request: new Request("https://example.com/api/roofr-lead", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer too-short",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        lead_id: "lead-test-123",
+        lead_form_url:
+          "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge"
+      })
+    }),
+    env: {
+      LEAD_ATTRIBUTION: kv,
+      GA4_API_SECRET: "ga4-test-secret",
+      GA4_DEBUG_MODE: "true",
+      ROOFR_WEBHOOK_SECRET: "a".repeat(40)
+    }
+  });
+
+  assert.equal(response.status, 401);
+  assert.deepEqual(await response.json(), {
+    error: "Unauthorized.",
+    debug: {
+      authorization_header_present: true,
+      bearer_prefix_valid: true,
+      supplied_secret_length: 9,
+      configured_secret_length: 40
+    }
+  });
+});
+
 test("estimator attaches only an opaque token and prevents duplicate starts", async () => {
   const source = await readFile(new URL("../script.js", import.meta.url), "utf8");
   const domListeners = {};

@@ -19,7 +19,23 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (!isAuthorizedWebhook(request, env.ROOFR_WEBHOOK_SECRET)) {
-    return jsonResponse({ error: "Unauthorized." }, 401);
+    const authorization = request.headers.get("Authorization") || "";
+    const hasBearerPrefix = authorization.startsWith("Bearer ");
+    const suppliedSecret = hasBearerPrefix ? authorization.slice(7) : "";
+    const responseBody = { error: "Unauthorized." };
+
+    // Preview-only diagnostics reveal formatting/length mistakes without ever
+    // returning either secret. Remove GA4_DEBUG_MODE after end-to-end QA.
+    if (env.GA4_DEBUG_MODE === "true") {
+      responseBody.debug = {
+        authorization_header_present: Boolean(authorization),
+        bearer_prefix_valid: hasBearerPrefix,
+        supplied_secret_length: suppliedSecret.length,
+        configured_secret_length: env.ROOFR_WEBHOOK_SECRET.length
+      };
+    }
+
+    return jsonResponse(responseBody, 401);
   }
 
   const contentLength = Number(request.headers.get("Content-Length") || 0);
