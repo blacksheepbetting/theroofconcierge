@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ga4MeasurementId = "G-C4HSNT9BY1";
 
-  const getAnalyticsField = (fieldName, timeoutMs = 750) =>
+  const getAnalyticsField = (fieldName, timeoutMs = 2500) =>
     new Promise((resolve) => {
       if (typeof window.gtag !== "function") {
         resolve(undefined);
@@ -114,7 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), 1000);
+    // Allow enough time for a cold GA4/Cloudflare load on mobile and Safari.
+    // Failure still opens the estimator without inventing a conversion.
+    const timeoutId = window.setTimeout(() => controller.abort(), 3000);
 
     try {
       const response = await window.fetch("/api/analytics-session", {
