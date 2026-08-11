@@ -82,6 +82,64 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const ga4MeasurementId = "G-C4HSNT9BY1";
+
+  const getAnalyticsField = (fieldName, timeoutMs = 750) =>
+    new Promise((resolve) => {
+      if (typeof window.gtag !== "function") {
+        resolve(undefined);
+        return;
+      }
+
+      let isSettled = false;
+      const settle = (value) => {
+        if (isSettled) return;
+        isSettled = true;
+        window.clearTimeout(timeoutId);
+        resolve(value || undefined);
+      };
+      const timeoutId = window.setTimeout(() => settle(undefined), timeoutMs);
+
+      window.gtag("get", ga4MeasurementId, fieldName, settle);
+    });
+
+  const createAttributionToken = async () => {
+    const [clientId, sessionId] = await Promise.all([
+      getAnalyticsField("client_id"),
+      getAnalyticsField("session_id")
+    ]);
+
+    if (!clientId || !sessionId || typeof window.fetch !== "function") {
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 1000);
+
+    try {
+      const response = await window.fetch("/api/analytics-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        cache: "no-store",
+        signal: controller.signal,
+        body: JSON.stringify({
+          clientId,
+          sessionId,
+          entryPath: window.location.pathname
+        })
+      });
+
+      if (!response.ok) return undefined;
+      const { token } = await response.json();
+      return /^[0-9a-f-]{36}$/i.test(token || "") ? token : undefined;
+    } catch {
+      return undefined;
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
+  };
+
   const conversionEvents = {
     phone_call: "phone_click",
     email_click: "email_click"
@@ -102,13 +160,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const estimatorShells = document.querySelectorAll("[data-estimator]");
 
-  const loadEstimator = (shell) => {
+  const loadEstimator = async (shell) => {
     const iframe = shell.querySelector("iframe[data-src]");
     if (!iframe) return;
 
-    if (!iframe.getAttribute("src")) {
+    if (iframe.getAttribute("src")) {
+      iframe.hidden = false;
+      shell.classList.add("is-loaded");
+      return;
+    }
+
+    // Prevent two fast clicks from loading the iframe and firing estimate_start twice.
+    if (shell.dataset.estimatorLoading === "true") return;
+    shell.dataset.estimatorLoading = "true";
+
+    try {
       const estimatorUrl = new URL(iframe.dataset.src, window.location.href);
       const pageParams = new URLSearchParams(window.location.search);
+      const attributionToken = await createAttributionToken();
+
       [
         "utm_source",
         "utm_medium",
@@ -123,15 +193,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const value = pageParams.get(key);
         if (value) estimatorUrl.searchParams.set(key, value);
       });
+
+      // Roofr stores this URL after creating a lead. The opaque, one-time token
+      // can be resolved by our server without exposing GA identifiers to Roofr.
+      if (attributionToken) {
+        estimatorUrl.searchParams.set("bp_attribution_token", attributionToken);
+      }
+      estimatorUrl.searchParams.set("bp_entry_path", window.location.pathname);
+      estimatorUrl.searchParams.set("bp_tracking_version", "1");
+
       iframe.setAttribute("src", estimatorUrl.toString());
       trackAnalyticsEvent("estimate_start", {
         estimator_provider: "Roofr",
-        estimator_url: estimatorUrl.toString()
+        estimator_entry_path: window.location.pathname,
+        attribution_token_attached: Boolean(attributionToken)
       });
-    }
 
-    iframe.hidden = false;
-    shell.classList.add("is-loaded");
+      iframe.hidden = false;
+      shell.classList.add("is-loaded");
+    } finally {
+      delete shell.dataset.estimatorLoading;
+    }
   };
 
   estimatorShells.forEach((shell) => {
