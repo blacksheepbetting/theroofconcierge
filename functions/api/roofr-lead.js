@@ -50,11 +50,12 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ error: "Invalid JSON." }, 400);
   }
 
-  const leadId = body?.lead_id || body?.leadId;
+  const rawLeadId = body?.lead_id ?? body?.leadId;
   const leadFormUrl = body?.lead_form_url || body?.leadFormUrl;
-  if (!isValidLeadId(leadId) || typeof leadFormUrl !== "string") {
+  if (!isValidLeadId(rawLeadId) || typeof leadFormUrl !== "string") {
     return jsonResponse({ error: "Invalid lead confirmation." }, 400);
   }
+  const leadId = String(rawLeadId);
 
   const processedKey = `processed:${leadId}`;
   if (await env.LEAD_ATTRIBUTION.get(processedKey)) {

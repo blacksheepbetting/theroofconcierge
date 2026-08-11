@@ -240,6 +240,34 @@ test("debug authorization failure reports only safe header diagnostics", async (
   });
 });
 
+test("Roofr numeric lead IDs are accepted and normalized", async () => {
+  const kv = new MemoryKv();
+  const response = await confirmRoofrLead({
+    request: new Request(`${siteOrigin}/api/roofr-lead`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${webhookSecret}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        lead_id: 123,
+        lead_form_url:
+          "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge"
+      })
+    }),
+    env: {
+      LEAD_ATTRIBUTION: kv,
+      GA4_API_SECRET: "ga4-test-secret",
+      ROOFR_WEBHOOK_SECRET: webhookSecret
+    }
+  });
+
+  assert.equal(response.status, 422);
+  assert.deepEqual(await response.json(), {
+    error: "Attribution token is missing or invalid."
+  });
+});
+
 test("estimator attaches only an opaque token and prevents duplicate starts", async () => {
   const source = await readFile(new URL("../script.js", import.meta.url), "utf8");
   const domListeners = {};

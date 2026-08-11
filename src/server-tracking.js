@@ -24,7 +24,8 @@ export const isValidEntryPath = (value) =>
   typeof value === "string" && /^\/[^?#]{0,199}$/.test(value);
 
 export const isValidLeadId = (value) =>
-  typeof value === "string" && /^[A-Za-z0-9_-]{6,128}$/.test(value);
+  (typeof value === "string" || typeof value === "number") &&
+  /^[A-Za-z0-9_-]{1,128}$/.test(String(value));
 
 export const isValidAttributionToken = (value) =>
   typeof value === "string" &&
