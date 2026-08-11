@@ -56,9 +56,14 @@ export const isAuthorizedWebhook = (request, expectedSecret) => {
 export const getRoofrAttributionToken = (leadFormUrl) => {
   try {
     const url = new URL(leadFormUrl);
+    const estimatorRoute = url.pathname.slice(ROOFR_ESTIMATOR_PATH.length);
+    const isExpectedEstimatorRoute =
+      estimatorRoute === "" ||
+      /^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)?$/.test(estimatorRoute);
     const isExpectedEstimator =
       url.origin === ROOFR_ESTIMATOR_ORIGIN &&
-      url.pathname === ROOFR_ESTIMATOR_PATH &&
+      url.pathname.startsWith(ROOFR_ESTIMATOR_PATH) &&
+      isExpectedEstimatorRoute &&
       url.searchParams.get("bp_tracking_version") === "1";
 
     if (!isExpectedEstimator) return undefined;

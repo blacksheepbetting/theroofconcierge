@@ -5,6 +5,7 @@ import vm from "node:vm";
 
 import { onRequestPost as createAnalyticsSession } from "../functions/api/analytics-session.js";
 import { onRequestPost as confirmRoofrLead } from "../functions/api/roofr-lead.js";
+import { getRoofrAttributionToken } from "../src/server-tracking.js";
 
 class MemoryKv {
   constructor() {
@@ -100,7 +101,7 @@ test("confirmed Roofr lead sends generate_lead once", async () => {
   );
 
   const leadFormUrl = new URL(
-    "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge"
+    "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge/homeowner-contact"
   );
   leadFormUrl.searchParams.set("bp_attribution_token", token);
   leadFormUrl.searchParams.set("bp_tracking_version", "1");
@@ -152,6 +153,29 @@ test("confirmed Roofr lead sends generate_lead once", async () => {
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("Roofr attribution accepts app routes but rejects lookalike estimator paths", () => {
+  const token = "550e8400-e29b-41d4-a716-446655440000";
+  const expectedBase =
+    "https://app.roofr.com/instant-estimator/76cd0b87-47e2-4469-8bc5-980e062fa709/TheRoofConcierge";
+  const withTracking = (path) =>
+    `${expectedBase}${path}?bp_attribution_token=${token}&bp_tracking_version=1`;
+
+  assert.equal(getRoofrAttributionToken(withTracking("/homeowner-contact")), token);
+  assert.equal(
+    getRoofrAttributionToken(
+      withTracking("/survey-results/550e8400-e29b-41d4-a716-446655440001")
+    ),
+    token
+  );
+  assert.equal(
+    getRoofrAttributionToken(
+      `${expectedBase}-lookalike?bp_attribution_token=${token}&bp_tracking_version=1`
+    ),
+    undefined
+  );
+  assert.equal(getRoofrAttributionToken(withTracking("/one/two/three")), undefined);
 });
 
 test("failed GA4 delivery releases the lead for a safe retry", async () => {
