@@ -1,3 +1,10 @@
+// Google Ads website-call forwarding configuration.
+if (typeof window.gtag === "function") {
+  window.gtag("config", "AW-18384096389/MJPLCMe9neMcEIWZnL5E", {
+    phone_conversion_number: "(317) 599-5858"
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const mobileToggle = document.querySelector(".mobile-toggle");
   const navMenu = document.querySelector("#nav-menu");
