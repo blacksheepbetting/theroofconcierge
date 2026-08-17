@@ -34,6 +34,8 @@ const integratedPages = [
   "privacy.html"
 ];
 
+const resourcePages = ["indiana-flood-recovery-fema-guidance.html"];
+
 const matchOne = (source, expression, label) => {
   const matches = [...source.matchAll(expression)];
   assert.equal(matches.length, 1, `${label} should appear exactly once`);
@@ -88,10 +90,44 @@ test("homepage and existing pages link visitors into basement and flood services
 
   const homepage = await readFile(path.join(root, "index.html"), "utf8");
   assert.match(homepage, /class="emergency-water-bar"/);
+  assert.match(homepage, /Flood alert/i);
+  assert.match(homepage, /class="emergency-ticker-track"/);
+  assert.match(homepage, /style\.css\?v=31/);
+  assert.match(homepage, /indiana-flood-recovery-fema-guidance\.html/);
   assert.match(homepage, /class="flood-home-feature"/);
   assert.match(homepage, /24\/7 Basement &amp; Flood Support/);
   assert.match(homepage, /<title>Indianapolis Roofing Company \| The Roof Concierge<\/title>/);
   assert.match(homepage, /<h1[^>]*>\s*Reliable Roofing Services/i);
+});
+
+test("homepage emergency ticker is accessible and motion-safe", async () => {
+  const homepage = await readFile(path.join(root, "index.html"), "utf8");
+  const styles = await readFile(path.join(root, "style.css"), "utf8");
+
+  assert.match(homepage, /class="visually-hidden">Impacted by recent flooding/i);
+  assert.match(homepage, /aria-hidden="true" class="emergency-ticker-track"/);
+  assert.match(styles, /@keyframes emergency-ticker-scroll/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+  assert.match(styles, /animation-play-state:\s*paused/);
+});
+
+test("flood recovery resource is sourced, cautious, trackable, and indexable", async () => {
+  for (const filename of resourcePages) {
+    const source = await readFile(path.join(root, filename), "utf8");
+    const canonical = matchOne(source, /<link\s+rel="canonical"\s+href="([^"]+)"/gsi, `${filename} canonical`);
+    const jsonLd = [...source.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gsi)];
+
+    assert.equal([...source.matchAll(/<h1\b[^>]*>/gsi)].length, 1);
+    assert.equal(canonical, `${domain}/indiana-flood-recovery-fema-guidance`);
+    assert.match(source, /FEMA assistance[^<]*not currently available/i);
+    assert.match(source, /not affiliated with FEMA/i);
+    assert.match(source, /not legal, insurance, financial, or eligibility advice/i);
+    assert.match(source, /State Disaster Relief Fund/i);
+    assert.match(source, /866-211-9966/);
+    assert.match(source, /G-C4HSNT9BY1/);
+    assert.match(source, /data-page-type="resource"/);
+    jsonLd.forEach(([, payload]) => JSON.parse(payload));
+  }
 });
 
 test("local HTML links resolve and sitemap contains every expansion canonical", async () => {
@@ -111,5 +147,11 @@ test("local HTML links resolve and sitemap contains every expansion canonical", 
       if (!href.endsWith(".html") || href.startsWith("http")) continue;
       await access(path.join(root, href));
     }
+  }
+
+  for (const filename of resourcePages) {
+    const source = await readFile(path.join(root, filename), "utf8");
+    const canonical = matchOne(source, /<link\s+rel="canonical"\s+href="([^"]+)"/gsi, `${filename} canonical`);
+    assert.ok(sitemap.includes(`<loc>${canonical}</loc>`), `${filename} canonical missing from sitemap`);
   }
 });

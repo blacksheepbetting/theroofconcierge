@@ -43,6 +43,17 @@ img { max-width: 100%; display: block; }
   z-index: 999;
 }
 .skip-link:focus { left: 12px; }
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 .section-shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
 
 .site-header {
@@ -1853,9 +1864,13 @@ details,
 .homepage-flood .site-header { top: 0; }
 
 .emergency-water-bar {
-  background: var(--champagne);
-  color: var(--charcoal);
-  border-bottom: 1px solid rgba(36,40,42,.2);
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.16) 0 10px, transparent 10px 22px),
+    #ffd43b;
+  color: #241a00;
+  border-top: 5px solid #a71916;
+  border-bottom: 3px solid #a71916;
+  box-shadow: inset 0 -1px 0 rgba(36,26,0,.16);
 }
 .emergency-water-inner {
   min-height: 52px;
@@ -1866,30 +1881,62 @@ details,
   padding-top: .45rem;
   padding-bottom: .45rem;
 }
-.emergency-water-inner p,
 .emergency-water-actions { display: flex; align-items: center; gap: .75rem; margin: 0; }
-.emergency-water-inner p { min-width: 0; font-size: .88rem; }
-.emergency-water-inner p > span:last-child { color: rgba(36,40,42,.78); }
+.emergency-alert-message { display: flex; align-items: center; gap: .8rem; min-width: 0; flex: 1 1 auto; }
 .emergency-water-badge {
   display: inline-grid;
   place-items: center;
   flex: 0 0 auto;
-  min-width: 48px;
+  min-width: 86px;
   min-height: 28px;
   padding: .2rem .55rem;
   border-radius: 999px;
-  background: var(--charcoal);
-  color: var(--warm-ivory);
+  background: #a71916;
+  color: #fff;
   font-size: .72rem;
   font-weight: 900;
   letter-spacing: .08em;
 }
+.emergency-ticker {
+  min-width: 0;
+  overflow: hidden;
+  font-size: .88rem;
+  line-height: 1.35;
+  color: rgba(36,26,0,.82);
+  mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+}
+.emergency-ticker-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  animation: emergency-ticker-scroll 27s linear infinite;
+}
+.emergency-ticker-track span { padding-right: 4rem; }
+.emergency-ticker-track strong { color: #241a00; margin-right: .45rem; }
+.emergency-ticker:hover .emergency-ticker-track,
+.emergency-ticker:focus-within .emergency-ticker-track { animation-play-state: paused; }
+@keyframes emergency-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 .emergency-water-actions { flex: 0 0 auto; }
 .emergency-water-actions a { font-size: .78rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
-.emergency-call { padding-right: .8rem; border-right: 1px solid rgba(36,40,42,.3); }
+.emergency-guide {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: .45rem .78rem;
+  border-radius: 8px;
+  background: #a71916;
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(122,20,16,.22);
+}
 .emergency-help { text-decoration: underline; text-underline-offset: .22em; }
 .emergency-water-actions a:hover,
 .emergency-water-actions a:focus-visible { color: #000; }
+.emergency-guide:hover,
+.emergency-guide:focus-visible { background: #74120f; color: #fff; }
 
 .services-menu { min-width: 280px; }
 .services-menu .urgent-menu-link { color: #6b562f; }
@@ -1942,7 +1989,7 @@ details,
 
 @media (max-width: 980px) {
   .emergency-water-inner { align-items: flex-start; flex-direction: column; gap: .45rem; }
-  .emergency-water-inner p { align-items: flex-start; flex-wrap: wrap; }
+  .emergency-alert-message { width: 100%; }
   .emergency-water-actions { width: 100%; justify-content: space-between; }
   .flood-feature-layout { grid-template-columns: 1fr; }
   .homepage-footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1950,12 +1997,122 @@ details,
 
 @media (max-width: 620px) {
   .emergency-water-inner { width: min(100% - 28px, 1160px); }
-  .emergency-water-inner p > span:last-child { display: none; }
+  .emergency-alert-message { align-items: flex-start; flex-direction: column; gap: .45rem; }
+  .emergency-ticker { width: 100%; overflow: visible; mask-image: none; }
+  .emergency-ticker-track { width: auto; white-space: normal; animation: none; }
+  .emergency-ticker-track span { padding: 0; }
+  .emergency-ticker-track span:nth-child(2) { display: none; }
   .emergency-water-actions { align-items: flex-start; flex-direction: column; gap: .2rem; }
-  .emergency-call { padding: 0; border: 0; }
+  .emergency-guide { width: 100%; justify-content: center; }
   .flood-home-feature { padding: 4rem 0; }
   .flood-feature-layout { width: min(100% - 28px, 1160px); }
   .flood-home-feature h2 { font-size: clamp(2.7rem, 14vw, 4.2rem); }
   .flood-feature-actions { align-items: flex-start; flex-direction: column; }
   .homepage-footer-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emergency-ticker-track { width: auto; white-space: normal; animation: none; transform: none; }
+  .emergency-ticker-track span { padding-right: 0; }
+  .emergency-ticker-track span:nth-child(2) { display: none; }
+}
+
+/* FLOOD RECOVERY & FEMA RESOURCE — AUGUST 2026 */
+.recovery-resource-page { background: #f7f4ec; }
+.recovery-resource-page .top-strip p { letter-spacing: .08em; }
+.recovery-main { overflow: visible; }
+.recovery-hero {
+  position: relative;
+  padding: clamp(4.5rem, 9vw, 7.5rem) 0;
+  color: var(--warm-ivory);
+  background:
+    radial-gradient(circle at 88% 16%, rgba(255,212,59,.2), transparent 27%),
+    linear-gradient(135deg, #24282a, #303538);
+}
+.recovery-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .16;
+  background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(255,255,255,.08) 18px 19px);
+}
+.recovery-hero-inner { position: relative; z-index: 1; max-width: 930px; }
+.recovery-alert-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  margin-bottom: 1.15rem;
+  padding: .42rem .72rem;
+  border-radius: 8px;
+  background: #ffd43b;
+  color: #42100e;
+  font-size: .76rem;
+  font-weight: 950;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.recovery-alert-label::before { content: "!"; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #a71916; color: #fff; }
+.recovery-hero h1 {
+  max-width: 880px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: .96;
+  letter-spacing: -.045em;
+}
+.recovery-hero p { max-width: 760px; margin: 1.25rem 0 0; color: rgba(242,239,232,.8); font-size: 1.08rem; }
+.recovery-updated { display: block; margin-top: 1rem; color: #ffd43b; font-size: .82rem; font-weight: 850; letter-spacing: .04em; }
+.recovery-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: clamp(2rem, 6vw, 5rem); padding: clamp(3.5rem, 7vw, 6.5rem) 0; align-items: start; }
+.recovery-content { min-width: 0; }
+.official-status-card {
+  margin-bottom: 3rem;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border: 2px solid #a71916;
+  border-left-width: 9px;
+  border-radius: 18px;
+  background: #fff5bd;
+  box-shadow: 0 18px 45px rgba(83,55,0,.1);
+}
+.official-status-card h2 { margin: 0 0 .7rem; color: #6f120f; font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.official-status-card p { margin: .65rem 0; }
+.status-note { font-size: .9rem; color: #5f5140; }
+.recovery-section { padding: 0 0 3.25rem; scroll-margin-top: 175px; }
+.recovery-section + .recovery-section { padding-top: 3.25rem; border-top: 1px solid rgba(140,146,149,.3); }
+.recovery-section h2 { margin: 0 0 1rem; font-family: var(--serif); font-size: clamp(2.15rem, 4vw, 3.25rem); line-height: 1; letter-spacing: -.025em; }
+.recovery-section h3 { margin: 1.65rem 0 .4rem; color: var(--charcoal); font-size: 1.08rem; }
+.recovery-section p { max-width: 780px; }
+.recovery-checklist { display: grid; gap: .9rem; margin: 1.5rem 0 0; padding: 0; list-style: none; counter-reset: recovery-step; }
+.recovery-checklist li { position: relative; min-height: 54px; padding: .95rem 1rem .95rem 4rem; border: 1px solid rgba(140,146,149,.28); border-radius: 14px; background: #fff; }
+.recovery-checklist li::before { counter-increment: recovery-step; content: counter(recovery-step); position: absolute; left: 1rem; top: .85rem; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--charcoal); color: #ffd43b; font-weight: 950; }
+.recovery-checklist strong { display: block; }
+.recovery-link-list { display: grid; gap: .75rem; margin-top: 1.35rem; }
+.recovery-link-card { display: block; padding: 1rem 1.1rem; border: 1px solid rgba(140,146,149,.3); border-radius: 14px; background: #fff; font-weight: 850; }
+.recovery-link-card span { display: block; color: var(--muted); font-size: .86rem; font-weight: 550; }
+.recovery-link-card:hover,
+.recovery-link-card:focus-visible { border-color: var(--champagne); transform: translateY(-1px); }
+.recovery-sidebar { position: sticky; top: 185px; display: grid; gap: 1rem; }
+.recovery-side-card { padding: 1.35rem; border-radius: 18px; background: var(--charcoal); color: var(--warm-ivory); box-shadow: var(--shadow); }
+.recovery-side-card.alert { background: #a71916; }
+.recovery-side-card h2 { margin: 0 0 .6rem; font-family: var(--serif); font-size: 1.55rem; }
+.recovery-side-card p { margin: 0 0 1rem; color: rgba(242,239,232,.76); font-size: .92rem; }
+.recovery-side-card .button { width: 100%; min-height: 46px; padding: .72rem 1rem; }
+.recovery-side-card a + a { margin-top: .65rem; }
+.recovery-disclaimer { padding: 1.25rem; border: 1px solid rgba(140,146,149,.35); border-radius: 15px; background: rgba(255,255,255,.7); color: #575f62; font-size: .86rem; }
+.recovery-faq details { padding: 1.1rem 0; border-top: 1px solid rgba(140,146,149,.3); }
+.recovery-faq summary { cursor: pointer; color: var(--charcoal); font-weight: 850; }
+.recovery-faq details p { margin-bottom: 0; }
+
+@media (max-width: 900px) {
+  .recovery-layout { grid-template-columns: 1fr; }
+  .recovery-sidebar { position: static; grid-template-columns: 1fr 1fr; }
+  .recovery-disclaimer { grid-column: 1 / -1; }
+}
+
+@media (max-width: 620px) {
+  .recovery-hero { padding: 3.75rem 0; }
+  .recovery-hero-inner,
+  .recovery-layout { width: min(100% - 28px, 1160px); }
+  .recovery-sidebar { grid-template-columns: 1fr; }
+  .recovery-disclaimer { grid-column: auto; }
 }
