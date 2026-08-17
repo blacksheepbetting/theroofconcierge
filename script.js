@@ -2,15 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileToggle = document.querySelector(".mobile-toggle");
   const navMenu = document.querySelector("#nav-menu");
   const menuLabel = mobileToggle?.querySelector("strong");
-  const dropdown = document.querySelector(".dropdown");
-  const dropdownToggle = document.querySelector(".dropdown-toggle");
-  const dropdownMenu = document.querySelector(".dropdown-menu");
+  const dropdowns = Array.from(document.querySelectorAll(".dropdown"));
   const siteHeader = document.querySelector(".site-header");
 
-  const closeDropdown = () => {
-    dropdown?.classList.remove("open");
-    dropdownMenu?.classList.remove("is-open");
-    dropdownToggle?.setAttribute("aria-expanded", "false");
+  const closeDropdowns = (except = null) => {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown === except) return;
+      dropdown.classList.remove("open");
+      dropdown.querySelector(".dropdown-menu")?.classList.remove("is-open");
+      dropdown.querySelector(".dropdown-toggle")?.setAttribute("aria-expanded", "false");
+    });
   };
 
   const setMenuState = (isOpen) => {
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       menuLabel.textContent = isOpen ? "Close" : "Menu";
     }
 
-    if (!isOpen) closeDropdown();
+    if (!isOpen) closeDropdowns();
   };
 
   if (mobileToggle && navMenu) {
@@ -52,9 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && navMenu.classList.contains("is-open")) {
-        setMenuState(false);
-        mobileToggle.focus();
+      if (event.key === "Escape") {
+        closeDropdowns();
+        if (navMenu.classList.contains("is-open")) {
+          setMenuState(false);
+          mobileToggle.focus();
+        }
       }
     });
 
@@ -63,15 +67,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (dropdownToggle && dropdownMenu) {
+  dropdowns.forEach((dropdown) => {
+    const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    if (!dropdownToggle || !dropdownMenu) return;
+
     dropdownToggle.addEventListener("click", (event) => {
       event.preventDefault();
       const isOpen = !dropdownMenu.classList.contains("is-open");
-      dropdown?.classList.toggle("open", isOpen);
+      closeDropdowns(dropdown);
+      dropdown.classList.toggle("open", isOpen);
       dropdownMenu.classList.toggle("is-open", isOpen);
       dropdownToggle.setAttribute("aria-expanded", String(isOpen));
     });
-  }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest?.(".dropdown")) closeDropdowns();
+  });
 
   const trackAnalyticsEvent = (eventName, parameters = {}) => {
     if (typeof window.gtag !== "function") return;
@@ -80,6 +93,32 @@ document.addEventListener("DOMContentLoaded", () => {
       page_path: window.location.pathname,
       ...parameters
     });
+  };
+
+  const inferPlacement = (control) => {
+    if (control.dataset.ctaPlacement) return control.dataset.ctaPlacement;
+    const container = control.closest?.("section, header, footer, nav");
+    if (!container) return "unknown";
+    return (
+      container.id ||
+      container.className?.toString().trim().split(/\s+/)[0] ||
+      container.tagName?.toLowerCase() ||
+      "unknown"
+    );
+  };
+
+  const getTrackingContext = (control) => {
+    const page = document.body?.dataset || {};
+    return {
+      service_category:
+        control.dataset.serviceCategory || page.serviceCategory || "roofing",
+      service_name: control.dataset.serviceName || page.serviceName || "",
+      page_type: page.pageType || "website",
+      cta_placement: inferPlacement(control),
+      link_url: control.href || control.getAttribute?.("href") || undefined,
+      link_text: control.textContent.trim().replace(/\s+/g, " ").slice(0, 100),
+      page_location: window.location.href
+    };
   };
 
   const ga4MeasurementId = "G-C4HSNT9BY1";
@@ -154,9 +193,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       trackAnalyticsEvent(eventName, {
         conversion_type: conversionType,
-        link_url: control.href || undefined,
-        link_text: control.textContent.trim().replace(/\s+/g, " ").slice(0, 100)
+        ...getTrackingContext(control)
       });
+    });
+  });
+
+  document.querySelectorAll("[data-analytics-event]").forEach((control) => {
+    control.addEventListener("click", () => {
+      trackAnalyticsEvent(control.dataset.analyticsEvent, getTrackingContext(control));
     });
   });
 

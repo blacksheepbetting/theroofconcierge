@@ -25,7 +25,7 @@
   <meta name="twitter:title" content="Avon Roofing Company | The Roof Concierge" />
   <meta name="twitter:description" content="Avon, IN roofing services for roof repair, replacement, inspections, storm damage, maintenance, and commercial properties. Get an instant estimate." />
   <meta name="twitter:image" content="https://www.theroofconcierge.com/avonstock.jpeg" />
-  <link rel="stylesheet" href="style.css?v=29" />
+  <link rel="stylesheet" href="style.css?v=30" />
   <link rel="icon" type="image/webp" href="FinalTRCLogo.webp" />
   <script type="application/ld+json">
 {
@@ -48,7 +48,7 @@
 }
   </script>
 </head>
-<body>
+<body data-page-type="roofing_location" data-service-category="roofing" data-service-name="Roofing Services">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <div class="top-strip">
@@ -68,7 +68,18 @@
       </button>
       <div class="nav-menu" id="nav-menu">
         <a href="index.html">Home</a>
-        <a href="#services">Services</a>
+        <div class="dropdown services-dropdown">
+          <button class="dropdown-toggle" type="button" aria-expanded="false">Services</button>
+          <div class="dropdown-menu services-menu">
+            <a href="#services" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Roofing Services</a>
+            <a href="basement-flood-services.html" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Basement &amp; Flood Overview</a>
+            <a class="urgent-menu-link" href="basement-water-removal.html" data-analytics-event="flood_help_click" data-cta-placement="primary_navigation">24/7 Water Removal</a>
+            <a href="basement-waterproofing.html" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Basement Waterproofing</a>
+            <a href="sump-pump-drainage.html" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Sump Pump &amp; Drainage</a>
+            <a href="water-damage-restoration.html" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Water Damage Restoration</a>
+            <a href="flood-prevention.html" data-analytics-event="service_navigation" data-cta-placement="primary_navigation">Flood Prevention</a>
+          </div>
+        </div>
         <a href="#process">Process</a>
         <div class="dropdown">
           <button class="dropdown-toggle" type="button" aria-expanded="false">Areas</button>
@@ -299,6 +310,7 @@
         <h3>Contact</h3>
         <a href="tel:+13175995858" data-conversion="phone_call">(317) 599-5858</a>
         <a href="mailto:info@theroofconcierge.com" data-conversion="email_click">info@theroofconcierge.com</a>
+        <a href="basement-flood-services.html" data-analytics-event="service_navigation" data-cta-placement="footer">Basement &amp; Flood Services</a>
         <a href="#faq">Roofing FAQs</a>
         <a href="privacy.html">Privacy Policy</a>
         <p>Indianapolis, Indiana</p>
@@ -309,6 +321,6 @@
       <span>Website template by Bridge Pointe Advisory Group.</span>
     </div>
   </footer>
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>

@@ -98,3 +98,24 @@ Zap. A different Roofr API mapping will be required.
 Do not import `generate_lead` into Google Ads or use it for bidding when the
 response says `unattributed`. Those events are valid confirmed-lead counts, but
 they cannot be safely connected to the originating ad click or website session.
+
+## Basement and flood expansion events
+
+The basement and flood pages use the same GA4 property and measurement ID as
+the roofing pages. This keeps one customer journey across both service lines.
+
+| Event | Meaning | Recommended key-event setting |
+| --- | --- | --- |
+| `phone_click` | A visitor clicked a telephone link | Yes |
+| `generate_lead` | Roofr confirmed that a lead was created | Yes, after the end-to-end confirmation test above |
+| `email_click` | A visitor clicked an email link | Optional |
+| `flood_help_click` | A visitor used an urgent flood-help link | No; navigation signal only |
+| `service_navigation` | A visitor selected a service page | No |
+| `service_area_navigation` | A visitor selected a city service page | No |
+| `cta_engagement` | A visitor used an in-page call to action | No |
+| `estimate_start` | A visitor opened the Roofr estimator | No; funnel step only |
+
+Register event-scoped custom dimensions for `service_category`, `service_name`,
+`page_type`, and `cta_placement`. These parameters distinguish roofing from
+basement/flood demand and show which navigation or call-to-action placements
+produce qualified engagement without inflating conversion counts.
